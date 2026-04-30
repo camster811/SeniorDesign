@@ -1,4 +1,4 @@
-function doPost(e) {
+function doPostCustom(e) {
   try {
     const data = JSON.parse(e.postData.contents);
 
@@ -14,8 +14,8 @@ function doPost(e) {
       next_gpt: data.next_gpt || ''
     };
 
-    writeToSheet(payload);
-    if (DO_EMAIL && CONSULTANT_EMAIL !== 'email') sendEmail(payload);
+    writeToSheetCustom(payload);
+    if (EMAIL_JOEL && JOEL_EMAIL !== 'email') emailJoelCustom(payload);
 
     return ContentService
       .createTextOutput(JSON.stringify({ success: true, message: 'Handoff recorded via POST' }))
@@ -28,13 +28,13 @@ function doPost(e) {
   }
 }
 
-function writeToSheet(payload) {
+function writeToSheetCustom(payload) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let sheet = ss.getSheetByName('d.BOBO Custom');
 
   if (!sheet) {
     sheet = ss.insertSheet('d.BOBO Custom');
-    sheet.appendRow(['Timestamp', 'GPT', 'Founder Name', 'Status', 'Customer Profile', 'Needs Answers', 'Custom Statement', 'Tough Spots', 'Next GPT']);
+    sheet.appendRow(['Timestamp', 'GPT', 'Founder Name', 'Status', 'Customer \nProfile', 'Needs Answers', 'Custom \nStatement', 'Tough Spots', 'Next GPT']);
     const headerRange = sheet.getRange(1, 1, 1, 9);
     headerRange.setFontWeight('bold').setBackground('#1A1A1A').setFontColor('#FFFFFF');
   }
@@ -52,7 +52,7 @@ function writeToSheet(payload) {
   ]);
 }
 
-function sendEmail(payload) {
+function emailJoelCustom(payload) {
   const subject = `d.BOBO Handoff — ${payload.founder_name} (GPT ${payload.gpt})`;
   const body = `New d.BOBO handoff summary:
 
@@ -79,10 +79,10 @@ ${payload.next_gpt}
 ---
 View full spreadsheet: ${SpreadsheetApp.getActiveSpreadsheet().getUrl()}`;
 
-  MailApp.sendEmail(CONSULTANT_EMAIL, subject, body);
+  MailApp.sendEmail(JOEL_EMAIL, subject, body);
 }
 
-function testHandoff() {
+function testHandoffCustom() {
   const testPayload = {
     gpt: '2-custom',
     founder_name: 'Test Founder',
@@ -95,7 +95,7 @@ function testHandoff() {
     next_gpt: '3-SIPOC'
   };
 
-  writeToSheet(testPayload);
-  if (DO_EMAIL) sendEmail(testPayload);
+  writeToSheetCustom(testPayload);
+  if (EMAIL_JOEL) emailJoelCustom(testPayload);
   Logger.log('Test handoff complete.');
 }
