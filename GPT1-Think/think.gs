@@ -1,6 +1,6 @@
 const SHEET_NAME = 'd.BOBO Handoffs';
 const DO_EMAIL = true;
-const CONSULTANT_EMAIL = 'cls0150@auburn.edu';
+const CONSULTANT_EMAIL = 'email';
 
 function doPost(e) {
   try {
