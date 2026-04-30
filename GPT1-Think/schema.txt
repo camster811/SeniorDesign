@@ -1,0 +1,39 @@
+openapi: 3.1.0
+info:
+  title: d.BOBO Handoff API
+  version: 1.1.0
+servers:
+  - url: https://script.google.com/macros/s/AKfycbyp-8gt1mkRv9YIYF4RxOrAHcNeiy7nsqZAcDxnAVqwr6z1G5Tn3ozhf64Om3B1cVMl
+paths:
+  /exec:
+    post:
+      operationId: submitHandoff
+      summary: Submit founder handoff summary via POST
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                gpt: { type: string }
+                founder_name: { type: string }
+                date: { type: string }
+                status: { type: string }
+                asili_story: { type: string }
+                team: { type: string }
+                proverb: { type: string }
+                image_metaphor: { type: string }
+                mission_statement: { type: string }
+                vision_statement: { type: string }
+                tough_spots: { type: string }
+                next_gpt: { type: string }
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
